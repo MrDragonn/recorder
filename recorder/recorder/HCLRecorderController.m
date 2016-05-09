@@ -112,10 +112,8 @@
     [self.pauseBtn addTarget:self action:@selector(pauseClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.resumeBtn addTarget:self action:@selector(resumeClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.stopeBtn addTarget:self action:@selector(stopeClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.voiceView];
     [self.view addSubview:self.scrollView];
     [self setScrollView];
-    
     [self setAudioSession];
 }
 //设置scrollView
@@ -159,7 +157,10 @@
 //点击停止按钮
 -(void)stopeClick:(UIButton *)sender{
     [self.audioRecorder stop];
+    self.array = nil;
     self.timer.fireDate=[NSDate distantFuture];
+     [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.voiceView.frame.size.width, self.voiceView.frame.size.height) animated:YES];
+
  
 }
 #pragma mark - 私有方法
@@ -269,29 +270,31 @@
 -(void)audioPowerChange{
     [self.audioRecorder updateMeters];//更新测量值
     float power= [self.audioRecorder averagePowerForChannel:0]+80;//取得第一个通道的音频，注意音频强度范围时-160到0
-    //设置scrollView的frame
-//    self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width+self.array.count*2,self.voiceView.frame.size.height);
-// self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width+ self.array.count *2, self.voiceView.frame.size.height);
     NSNumber * number = [NSNumber numberWithFloat:power];
     [self.array addObject:number];
     
     self.voiceView.array = self.array;
     [self.voiceView setNeedsDisplay];
     
+    int i  = self.array.count;
     
-    static int i = 2;
-    if (self.array.count *2 > self.scrollView.frame.size.width/2) {
-        [self.scrollView scrollRectToVisible:CGRectMake(i,0, self.voiceView.frame.size.width, self.voiceView.frame.size.height) animated:YES];
-        self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width/2+self.array.count*2,self.voiceView.frame.size.height);
-        self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width/2+ self.array.count *2, self.voiceView.frame.size.height);
-
-        i++;
+    if ((self.array.count) *2 >= self.scrollView.frame.size.width/2) {
+        [self.scrollView scrollRectToVisible:CGRectMake(i*2,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
+        self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width/2+i*2,self.voiceView.frame.size.height);
+        self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width/2+ i *2, self.voiceView.frame.size.height);
+    }
+    else{
+        [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
+        self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width,self.voiceView.frame.size.height);
+        self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.voiceView.frame.size.height);
+        
     }
 }
 -(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag{
     if (![self.audioPlayer isPlaying]) {
         [self.audioPlayer play];
     }
+ 
     NSLog(@"录音完成!");
 }
 
