@@ -9,15 +9,7 @@
 #import "HCLRecorderView.h"
 
 @implementation HCLRecorderView
-//-(instancetype)init{
-//    
-//    self = [super init];
-////    滑动条和弹簧显示
-//    self.showsHorizontalScrollIndicator = YES;
-//    self.showsVerticalScrollIndicator = YES;
-//     self.bounces = YES;
-//    return self;
-//}
+
 
 //画图:
 -(void)drawRect:(CGRect)rect{
@@ -29,11 +21,12 @@
     int x = 0;
     for (NSNumber* number in self.array) {
         int y = [number intValue];
-        y -= 20;
+        y  = y+60;
+        NSLog(@"%f",self.frame.size.height*y/160);
         CGPoint aPoints[2];//坐标点
         if(y<=1) y = 1;
-        aPoints[0] =CGPointMake(x,self.frame.size.height/2- y*1.5);//坐标1
-        aPoints[1] =CGPointMake(x, self.frame.size.height/2+y*1.5);//坐标2
+        aPoints[0] =CGPointMake(x,self.frame.size.height/2- self.frame.size.height*y/160);//坐标1+25
+        aPoints[1] =CGPointMake(x, self.frame.size.height/2+self.frame.size.height*y/160);//坐标2-25
         //CGContextAddLines(CGContextRef c, const CGPoint points[],size_t count)
         //points[]坐标数组，和count大小
         CGContextAddLines(context, aPoints, 2);//添加线

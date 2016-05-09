@@ -31,6 +31,7 @@
         _scrollView = [[UIScrollView alloc]init];
         _scrollView.frame = CGRectMake(0, 20, self.view.frame.size.width, 300);
         _scrollView.backgroundColor = [UIColor lightGrayColor];
+     
     }
     return _scrollView;
     
@@ -40,7 +41,22 @@
     if (!_voiceView) {
         _voiceView = [[HCLRecorderView alloc]init];
         _voiceView.frame =CGRectMake(0, 0, self.scrollView.frame.size.width,self.scrollView.frame.size.height);
+        
         _voiceView.backgroundColor = [UIColor blackColor];
+        //添加数字
+        for (int i = 0 ; i <=_voiceView.frame.size.width/40; i++) {
+            UILabel * label =[UILabel new];
+            label.frame= CGRectMake(i*40+2, 10, 20, 10);
+            label.text = [NSString stringWithFormat:@"%d",i];
+            label.textColor = [UIColor  whiteColor];
+            label.font = [UIFont systemFontOfSize:10];
+            [_voiceView addSubview:label];
+            UIButton* btn = [UIButton new];
+            btn.frame=CGRectMake(i*40, 10, 1, 10);
+            btn.backgroundColor = [UIColor grayColor];
+             [_voiceView addSubview:btn];
+            
+        }
     }
     return _voiceView;
     
@@ -269,19 +285,31 @@
  */
 -(void)audioPowerChange{
     [self.audioRecorder updateMeters];//更新测量值
-    float power= [self.audioRecorder averagePowerForChannel:0]+80;//取得第一个通道的音频，注意音频强度范围时-160到0
+    float power= [self.audioRecorder averagePowerForChannel:0];//取得第一个通道的音频，注意音频强度范围时-160到0
     NSNumber * number = [NSNumber numberWithFloat:power];
     [self.array addObject:number];
     
     self.voiceView.array = self.array;
-    [self.voiceView setNeedsDisplay];
     
     int i  = self.array.count;
-    
-    if ((self.array.count) *2 >= self.scrollView.frame.size.width/2) {
+    if (i *2 >= self.scrollView.frame.size.width/2) {
         [self.scrollView scrollRectToVisible:CGRectMake(i*2,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
         self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width/2+i*2,self.voiceView.frame.size.height);
         self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width/2+ i *2, self.voiceView.frame.size.height);
+        //添加数字
+        for (int i = 0 ; i <=_voiceView.frame.size.width/40; i++) {
+            UILabel * label =[UILabel new];
+            label.frame= CGRectMake(i*40+2, 10, 20, 10);
+            label.text = [NSString stringWithFormat:@"%d",i];
+            label.textColor = [UIColor  whiteColor];
+            label.font = [UIFont systemFontOfSize:10];
+            [_voiceView addSubview:label];
+            UIButton* btn = [UIButton new];
+            btn.frame=CGRectMake(i*40, 10, 1, 10);
+            btn.backgroundColor = [UIColor grayColor];
+            [_voiceView addSubview:btn];
+            
+        }
     }
     else{
         [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
@@ -289,6 +317,7 @@
         self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.voiceView.frame.size.height);
         
     }
+        [self.voiceView setNeedsDisplay];
 }
 -(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag{
     if (![self.audioPlayer isPlaying]) {
