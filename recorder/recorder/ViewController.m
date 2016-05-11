@@ -42,7 +42,6 @@
 -(void)recordClick:(UIButton *)sender{
     HCLRecorderController * hcl =[[HCLRecorderController alloc]init];
     [self presentViewController:hcl animated:YES completion:nil];
-    NSLog(@"xx");
     
     }
 @end

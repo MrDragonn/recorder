@@ -14,7 +14,7 @@
 @property (nonatomic,strong) AVAudioRecorder *audioRecorder;//音频录音机
 @property (nonatomic,strong) AVAudioPlayer *audioPlayer;//音频播放器，用于播放录音文件
 @property (nonatomic,strong) NSTimer *timer;//录音声波监控（注意这里暂时不对播放进行监控）
-@property (nonatomic,strong) NSTimer *timer2;
+//@property (nonatomic,strong) NSTimer *timer2;
 @property(nonatomic,strong) UIButton * recordBtn;
 @property(nonatomic,strong) UIButton * pauseBtn;
 @property(nonatomic,strong) UIButton * resumeBtn;
@@ -58,8 +58,7 @@
         _voiceView.frame =CGRectMake(0, 0, self.scrollView.frame.size.width,self.scrollView.frame.size.height);
         
         _voiceView.backgroundColor = [UIColor blackColor];
-        //添加数字
-  
+        //先添加初始界面数字 竖线
         for (int i = 0 ; i <=5; i++) {
          
             UILabel * label =[[UILabel alloc]init];
@@ -75,8 +74,8 @@
             [_voiceView addSubview:btn];
             
         }
-        //添加小标记
         
+        //添加初始界面小标记
         for (int i = 0 ; i <=25; i++) {
             UIButton * btn2 = [[UIButton alloc]init];
             btn2.frame=CGRectMake(i*self.view.frame.size.width/25, 20, 1, 10);
@@ -185,7 +184,7 @@
     if (![self.audioRecorder isRecording]) {
         [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
         self.timer.fireDate=[NSDate distantPast];
-        self.timer2.fireDate=[NSDate distantPast];
+        
     }
         self.scrollView.scrollEnabled = NO;
 }
@@ -194,7 +193,7 @@
     if ([self.audioRecorder isRecording]) {
         [self.audioRecorder pause];
         self.timer.fireDate=[NSDate distantFuture];
-        self.timer2.fireDate=[NSDate distantFuture];
+        
     }
         self.scrollView.scrollEnabled = YES;
 }
@@ -208,7 +207,7 @@
     [self.audioRecorder stop];
     self.array = nil;
     self.timer.fireDate=[NSDate distantFuture];
-   self.timer2.fireDate=[NSDate distantFuture];
+
      [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.voiceView.frame.size.width, self.voiceView.frame.size.height) animated:YES];
 
      self.scrollView.scrollEnabled = YES;
@@ -305,54 +304,16 @@
     return _audioPlayer;
 }
 
-/**
- *  录音声波监控定制器
- *
- *  @return 定时器
- */
+// 绘图定时器  目前每秒画50次
 -(NSTimer *)timer{
     if (!_timer) {
         _timer=[NSTimer scheduledTimerWithTimeInterval:0.02f target:self selector:@selector(audioPowerChange) userInfo:nil repeats:YES];
     }
     return _timer;
 }
--(NSTimer *)timer2{
-    
-    if (!_timer2) {
-        _timer2=[NSTimer scheduledTimerWithTimeInterval:0.2f target:self selector:@selector(changeScrollView) userInfo:nil repeats:YES];
-    }
-    return _timer2;
-
-}
-
--(void)changeScrollView{
-    float i = 0 ;
-    if (IS_IPHONE_6) {
-        i  = self.array.count * 1.5;
-        
-    }
-    if (IS_IPHONE_6P) {
-        i  = self.array.count * 414.0/250.0;
-        
-    }
-    if (IS_IPHONE_5) {
-        i  = self.array.count * 320.0 /250.0;
-        
-    }
-
-    if (i>= self.scrollView.frame.size.width/2.0) {
-        
-        [self.scrollView scrollRectToVisible:CGRectMake(self.voiceView.frame.size.width*1.0 - self.view.frame.size.width*1.0,0, self.view.frame.size.width*1.0, self.view.frame.size.height) animated:YES];
-    }
-}
 
 
-/**
- *  录音声波状态设置
- */
-/**
- *  录音声波状态设置
- */
+//画声波图
 -(void)audioPowerChange{
     [self.audioRecorder updateMeters];//更新测量值
     float power= [self.audioRecorder averagePowerForChannel:0];//取得第一个通道的音频，注意音频强度范围时-160到0
@@ -361,6 +322,7 @@
     
     self.voiceView.array = self.array;
     float i = 0 ;
+    //
     if (IS_IPHONE_6) {
         i  = self.array.count * 1.5;
         
@@ -373,17 +335,17 @@
         i  = self.array.count * 320.0 /250.0;
         
     }
-#pragma mark link;
-    //添加竖线
-    
-    
+    //添加竖线,数字
     if (self.array.count % 10 == 0 ) {
         UIButton *btn = [UIButton new];
         btn.frame=CGRectMake(i+self.view.frame.size.width, 20, 1, 10);
         btn.backgroundColor = [UIColor whiteColor];
         [_voiceView addSubview:btn];
+        //移动scrollView;
+       [self.scrollView scrollRectToVisible:CGRectMake(i,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
         
     }
+  
         if (self.array.count % 50 == 0) {
             UIButton *btn = [UIButton new];
             btn.frame=CGRectMake(i+self.view.frame.size.width, 10, 1, 20);
@@ -394,22 +356,17 @@
                     label.textColor = [UIColor  whiteColor];
                     label.frame= CGRectMake(i+self.view.frame.size.width+20, 10, 30, 10);
             int f = self.array.count/50 +5;
-            NSLog(@"%d",f);
                label.text = [NSString stringWithFormat:@"%d%d:%d%d",f/600%6,f/60%10,f/10%6,f%10];
                     [_voiceView addSubview:label];
 
             
         }
-    
-    
-    
-
-    
+    //如果超过屏幕一半  增加view的frame
     if (i>= self.scrollView.frame.size.width/2.0) {
+        //屏幕移动
+      
         self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width*1.0/2.0+i,self.voiceView.frame.size.height*1.0);
         self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*1.0/2.0+ i , self.voiceView.frame.size.height*1.0);
-            
-        
     }
     else{
         [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
@@ -424,7 +381,6 @@
     if (![self.audioPlayer isPlaying]) {
         [self.audioPlayer play];
     }
-  
     NSLog(@"录音完成!");
 
 }
