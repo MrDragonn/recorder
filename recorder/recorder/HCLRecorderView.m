@@ -18,7 +18,7 @@
     UIColor* aColor = [UIColor whiteColor];//白色
     
     CGContextSetStrokeColorWithColor(context, aColor.CGColor);//线框颜色
-    float x = 0;
+    float x = 10;
     for (NSNumber* number in self.array) {
         float y = [number intValue];
         y  = y+30;
@@ -26,10 +26,8 @@
        
         CGPoint aPoints[2];//坐标点
         if(y<=1) y = 1;
-        aPoints[0] =CGPointMake(x,(self.frame.size.height-30)/2- self.frame.size.height*y*1.5/160);//坐标1+25
-        aPoints[1] =CGPointMake(x, (self.frame.size.height-30)/2+self.frame.size.height*y*1.5/160);//坐标2-25
-        //CGContextAddLines(CGContextRef c, const CGPoint points[],size_t count)
-        //points[]坐标数组，和count大小
+        aPoints[0] =CGPointMake(x,(self.frame.size.height+30)/2- self.frame.size.height*y*1.5/160);//坐标1
+        aPoints[1] =CGPointMake(x, (self.frame.size.height+30)/2+self.frame.size.height*y*1.5/160);//坐标2
         CGContextAddLines(context, aPoints, 2);//添加线
         
         if (IS_IPHONE_6) {
@@ -43,9 +41,9 @@
         }
     }
      CGPoint line[2];
-    line[0]= CGPointMake(0, (self.frame.size.height-30)/2);
-    line[1]= CGPointMake(self.frame.size.width, (self.frame.size.height-30)/2);
-    CGContextAddLines(context, line, 2);//添加线
+    line[0]= CGPointMake(0, (self.frame.size.height+30)/2);
+    line[1]= CGPointMake(self.frame.size.width, (self.frame.size.height+30)/2);
+    CGContextAddLines(context, line, 2);//中间添加线
     //根据坐标绘制路径
    CGContextDrawPath(context, kCGPathStroke);
     
@@ -55,7 +53,7 @@
     CGPoint lline[2];
     lline[0]= CGPointMake(0, 30);
     lline[1]= CGPointMake(self.frame.size.width, 30);
-    CGContextAddLines(context2, lline, 2);//添加线
+    CGContextAddLines(context2, lline, 2);//上边添加线
     CGContextDrawPath(context2, kCGPathStroke);
 }
 
