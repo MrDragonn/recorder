@@ -58,26 +58,26 @@
         
         _voiceView.backgroundColor = [UIColor blackColor];
         //先添加初始界面数字 竖线
-        for (int i = 0 ; i <=5; i++) {
+        for (int i = 0 ; i <=6; i++) {
          
             UILabel * label =[[UILabel alloc]init];
-            label.frame= CGRectMake(i*self.view.frame.size.width/5+20, 10, 30, 10);
+            label.frame= CGRectMake(i*self.view.frame.size.width/6+20, 10, 30, 10);
             label.textColor = [UIColor  whiteColor];
             label.text = [NSString stringWithFormat:@"00:0%d",i];
             label.font = [UIFont systemFontOfSize:10];
             [_voiceView addSubview:label];
             UIButton* btn = [UIButton new];
             
-            btn.frame=CGRectMake(10+i*self.view.frame.size.width/5, 10, 1, 20);
+            btn.frame=CGRectMake(10+i*self.view.frame.size.width/6, 12, 1, 20);
             btn.backgroundColor = [UIColor whiteColor];
             [_voiceView addSubview:btn];
             
         }
         
         //添加初始界面小标记
-        for (int i = 0 ; i <=25; i++) {
+        for (int i = 0 ; i <=30; i++) {
             UIButton * btn2 = [[UIButton alloc]init];
-            btn2.frame=CGRectMake(10+i*self.view.frame.size.width/25, 25, 1, 5);
+            btn2.frame=CGRectMake(10+i*self.view.frame.size.width/30, 27, 1, 5);
             btn2.backgroundColor = [UIColor whiteColor];
             [_voiceView addSubview:btn2];
         }
@@ -322,15 +322,15 @@
     float i = 0 ;
     //
     if (IS_IPHONE_6) {
-        i  = self.array.count * 1.5;
+        i  = self.array.count * 375/300.0;
         
     }
     if (IS_IPHONE_6P) {
-        i  = self.array.count * 414.0/250.0;
+        i  = self.array.count * 414.0/300.0;
         
     }
     if (IS_IPHONE_5) {
-        i  = self.array.count * 320.0 /250.0;
+        i  = self.array.count * 320.0 /300.0;
         
     }
     //添加竖线,数字
@@ -346,14 +346,14 @@
   
         if (self.array.count % 50 == 0) {
             UIButton *btn = [UIButton new];
-            btn.frame=CGRectMake(10+i+self.view.frame.size.width, 10, 1, 20);
+            btn.frame=CGRectMake(10+i+self.view.frame.size.width, 12, 1, 20);
             btn.backgroundColor = [UIColor whiteColor];
             [_voiceView addSubview:btn];
             UILabel * label =[UILabel new];
                     label.font = [UIFont systemFontOfSize:10];
                     label.textColor = [UIColor  whiteColor];
-                    label.frame= CGRectMake(10+i+self.view.frame.size.width+20, 10, 30, 10);
-            int f = self.array.count/50 +5;
+                    label.frame= CGRectMake(10+i+self.view.frame.size.width+22, 10, 30, 10);
+            int f = self.array.count/50 +6;
                label.text = [NSString stringWithFormat:@"%d%d:%d%d",f/600%6,f/60%10,f/10%6,f%10];
                     [_voiceView addSubview:label];
 
