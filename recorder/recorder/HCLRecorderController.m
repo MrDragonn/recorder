@@ -43,6 +43,7 @@
         _scrollView = [[UIScrollView alloc]init];
         _scrollView.frame = CGRectMake(0, 20, self.view.frame.size.width, 300);
         _scrollView.backgroundColor = [UIColor lightGrayColor];
+        
      
     }
     return _scrollView;
@@ -61,7 +62,7 @@
         for (int i = 0 ; i <=6; i++) {
          
             UILabel * label =[[UILabel alloc]init];
-            label.frame= CGRectMake(i*self.view.frame.size.width/6+20, 10, 30, 10);
+            label.frame= CGRectMake(i*self.view.frame.size.width/6+15, 15, 30, 10);
             label.textColor = [UIColor  whiteColor];
             label.text = [NSString stringWithFormat:@"00:0%d",i];
             label.font = [UIFont systemFontOfSize:10];
@@ -156,6 +157,57 @@
     [self.view addSubview:self.scrollView];
     [self setScrollView];
     [self setAudioSession];
+    for (int i = 0; i <7; i++) {
+        UILabel * label = [UILabel new];
+        label.frame= CGRectMake(self.view.frame.size.width - 25 , 191+i*15, 20, 10);
+        label.textAlignment = 2;
+        if (i==0) {
+            label.text = [NSString stringWithFormat:@"-10"];
+        }
+        if (i==1) {
+            label.text = [NSString stringWithFormat:@"-7"];
+        }if (i==2) {
+            label.text = [NSString stringWithFormat:@"-5"];
+        }if (i==3) {
+            label.text = [NSString stringWithFormat:@"-3"];
+        }if (i==4) {
+            label.text = [NSString stringWithFormat:@"-2"];
+        }if (i==5) {
+            label.text = [NSString stringWithFormat:@"-1"];
+        }if (i==6) {
+            label.text = [NSString stringWithFormat:@"0"];
+        }
+        
+        label.font = [UIFont systemFontOfSize:10];
+        label.textColor = [UIColor whiteColor];
+        [self.view addSubview:label];
+    }
+    for (int i = 0; i <7; i++) {
+        UILabel * label = [UILabel new];
+        label.frame= CGRectMake(self.view.frame.size.width - 25 , 171-i*15, 20, 10);
+        label.textAlignment = 2;
+        if (i==0) {
+            label.text = [NSString stringWithFormat:@"-10"];
+        }
+        if (i==1) {
+            label.text = [NSString stringWithFormat:@"-7"];
+        }if (i==2) {
+            label.text = [NSString stringWithFormat:@"-5"];
+        }if (i==3) {
+            label.text = [NSString stringWithFormat:@"-3"];
+        }if (i==4) {
+            label.text = [NSString stringWithFormat:@"-2"];
+        }if (i==5) {
+            label.text = [NSString stringWithFormat:@"-1"];
+        }if (i==6) {
+            label.text = [NSString stringWithFormat:@"0"];
+        }
+        
+        label.font = [UIFont systemFontOfSize:10];
+        label.textColor = [UIColor whiteColor];
+        [self.view addSubview:label];
+    }
+
 }
 //设置scrollView
 -(void)setScrollView{
@@ -352,7 +404,7 @@
             UILabel * label =[UILabel new];
                     label.font = [UIFont systemFontOfSize:10];
                     label.textColor = [UIColor  whiteColor];
-                    label.frame= CGRectMake(10+i+self.view.frame.size.width+22, 10, 30, 10);
+                    label.frame= CGRectMake(10+i+self.view.frame.size.width+5, 15, 30, 10);
             int f = self.array.count/50 +6;
                label.text = [NSString stringWithFormat:@"%d%d:%d%d",f/600%6,f/60%10,f/10%6,f%10];
                     [_voiceView addSubview:label];
