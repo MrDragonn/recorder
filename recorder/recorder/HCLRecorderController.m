@@ -9,6 +9,7 @@
 #import "HCLRecorderController.h"
 #import <AVFoundation/AVFoundation.h>
 #import "HCLRecorderView.h"
+
 @interface HCLRecorderController ()<AVAudioRecorderDelegate,UIScrollViewDelegate>
 @property (nonatomic,strong) AVAudioRecorder *audioRecorder;//音频录音机
 @property (nonatomic,strong) AVAudioPlayer *audioPlayer;//音频播放器，用于播放录音文件
@@ -28,6 +29,7 @@
 
 @implementation HCLRecorderController
 #pragma 声波视图
+
 -(NSMutableArray *)voiceArray{
     if (!_voiceArray) {
         _voiceArray = [NSMutableArray array];
@@ -57,20 +59,19 @@
         
         _voiceView.backgroundColor = [UIColor blackColor];
         //添加数字
-        
+  
         for (int i = 0 ; i <=5; i++) {
-          UILabel * label =[UILabel new];
-            
+         
+            UILabel * label =[[UILabel alloc]init];
             label.frame= CGRectMake(i*self.view.frame.size.width/5+20, 10, 30, 10);
             label.textColor = [UIColor  whiteColor];
-            label.text = [NSString stringWithFormat:@"%d%d:%d%d",i/600%6,i/60%10,i/10%6,i%10];
-           
+            label.text = [NSString stringWithFormat:@"00:0%d",i];
             label.font = [UIFont systemFontOfSize:10];
             [_voiceView addSubview:label];
             UIButton* btn = [UIButton new];
             
             btn.frame=CGRectMake(i*self.view.frame.size.width/5, 10, 1, 20);
-            btn.backgroundColor = [UIColor grayColor];
+            btn.backgroundColor = [UIColor whiteColor];
             [_voiceView addSubview:btn];
             
         }
@@ -79,7 +80,7 @@
         for (int i = 0 ; i <=25; i++) {
             UIButton * btn2 = [[UIButton alloc]init];
             btn2.frame=CGRectMake(i*self.view.frame.size.width/25, 20, 1, 10);
-            btn2.backgroundColor = [UIColor grayColor];
+            btn2.backgroundColor = [UIColor whiteColor];
             [_voiceView addSubview:btn2];
             
         }
@@ -372,39 +373,43 @@
         i  = self.array.count * 320.0 /250.0;
         
     }
+#pragma mark link;
+    //添加竖线
     
+    
+    if (self.array.count % 10 == 0 ) {
+        UIButton *btn = [UIButton new];
+        btn.frame=CGRectMake(i+self.view.frame.size.width, 20, 1, 10);
+        btn.backgroundColor = [UIColor whiteColor];
+        [_voiceView addSubview:btn];
+        
+    }
+        if (self.array.count % 50 == 0) {
+            UIButton *btn = [UIButton new];
+            btn.frame=CGRectMake(i+self.view.frame.size.width, 10, 1, 20);
+            btn.backgroundColor = [UIColor whiteColor];
+            [_voiceView addSubview:btn];
+            UILabel * label =[UILabel new];
+                    label.font = [UIFont systemFontOfSize:10];
+                    label.textColor = [UIColor  whiteColor];
+                    label.frame= CGRectMake(i+self.view.frame.size.width+20, 10, 30, 10);
+            int f = self.array.count/50 +5;
+            NSLog(@"%d",f);
+               label.text = [NSString stringWithFormat:@"%d%d:%d%d",f/600%6,f/60%10,f/10%6,f%10];
+                    [_voiceView addSubview:label];
+
+            
+        }
+    
+    
+    
+
     
     if (i>= self.scrollView.frame.size.width/2.0) {
         self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width*1.0/2.0+i,self.voiceView.frame.size.height*1.0);
         self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*1.0/2.0+ i , self.voiceView.frame.size.height*1.0);
-        UILabel * label =[UILabel new];
-     label.font = [UIFont systemFontOfSize:10];
-              UIButton* btn = [UIButton new];
-        label.textColor = [UIColor  whiteColor];
-        //添加数字
-        for (int i = 0 ; i <=self.voiceView.frame.size.width *5/ self.view.frame.size.width; i++) {
-            if (i >5) {
-                
             
-            label.frame= CGRectMake(i*self.view.frame.size.width/5+20, 10, 30, 10);
-             label.text = [NSString stringWithFormat:@"%d%d:%d%d",i/600%10,i/60%10,i/10%6,i%10];
-            
-            [_voiceView addSubview:label];
-      
-            btn.frame=CGRectMake(i*self.view.frame.size.width/5, 10, 1, 20);
-            btn.backgroundColor = [UIColor grayColor];
-            [_voiceView addSubview:btn];
-            }
-        }
-        //添加小标记
-        UIButton * btn2 = [[UIButton alloc]init];
-        for (int i = 0 ; i <=self.voiceView.frame.size.width *25/ self.view.frame.size.width; i++) {
-            
-            btn2.frame=CGRectMake(i*self.view.frame.size.width/25, 20, 1, 10);
-            btn2.backgroundColor = [UIColor grayColor];
-            [_voiceView addSubview:btn2];
-            
-        }
+        
     }
     else{
         [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
@@ -419,7 +424,7 @@
     if (![self.audioPlayer isPlaying]) {
         [self.audioPlayer play];
     }
- 
+  
     NSLog(@"录音完成!");
 
 }

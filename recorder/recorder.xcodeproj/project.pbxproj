@@ -13,9 +13,9 @@
 		6B3FBB4C1CDC698600FFE08F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B3FBB4A1CDC698600FFE08F /* Main.storyboard */; };
 		6B3FBB4E1CDC698600FFE08F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6B3FBB4D1CDC698600FFE08F /* Assets.xcassets */; };
 		6B3FBB511CDC698600FFE08F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6B3FBB4F1CDC698600FFE08F /* LaunchScreen.storyboard */; };
-		6B3FBB591CDC699100FFE08F /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3FBB581CDC699100FFE08F /* AVFoundation.framework */; };
 		6B3FBB5C1CDC6FDA00FFE08F /* HCLRecorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3FBB5B1CDC6FDA00FFE08F /* HCLRecorderView.m */; };
 		6B3FBB5F1CDC700900FFE08F /* HCLRecorderController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B3FBB5E1CDC700900FFE08F /* HCLRecorderController.m */; };
+		6B5378411CE2F5B900725EDF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3FBB581CDC699100FFE08F /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,7 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6B3FBB591CDC699100FFE08F /* AVFoundation.framework in Frameworks */,
+				6B5378411CE2F5B900725EDF /* AVFoundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
