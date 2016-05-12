@@ -41,7 +41,8 @@
     if (!_label) {
         _label = [[UILabel alloc]init];
         _label.frame = CGRectMake(10, 320, self.view.frame.size.width - 300, 30);
-        _label.backgroundColor = [UIColor yellowColor];
+        _label.textColor = [UIColor whiteColor];
+        if(IS_IPHONE_5){_label.frame = CGRectMake(10, 320, self.view.frame.size.width - 300, 30);}
         _label.textAlignment = 1;
         _label.text = @"00:00:00";
       
@@ -259,7 +260,8 @@
     }
         self.scrollView.scrollEnabled = NO;
      self.scrollView.contentOffset=CGPointMake(0, 0);
-    self.label.frame = CGRectMake(10, 320, self.view.frame.size.width - 300, 30);
+    if(self.array.count == 0 ){
+        self.label.frame = CGRectMake(10, 320, self.view.frame.size.width - 300, 30);}
 }
 // 点击暂定按钮
 -(void)pauseClick:(UIButton *)sender{
