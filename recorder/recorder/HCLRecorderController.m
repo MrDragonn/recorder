@@ -18,10 +18,12 @@
 @property(nonatomic,strong) UIButton * pauseBtn;
 @property(nonatomic,strong) UIButton * resumeBtn;
 @property(nonatomic,strong) UIButton * stopeBtn;
+@property(nonatomic,strong)UILabel * label;
 @property(nonatomic,copy)NSMutableArray * array;
 @property(nonatomic,strong)HCLRecorderView * voiceView;
 @property(nonatomic,strong)UIScrollView * scrollView;
 //保存声音地址数组
+@property(nonatomic,strong)UIButton * scrollBtn;
 @property(nonatomic,copy)NSMutableArray * voiceArray;
 
 @end
@@ -34,9 +36,27 @@
         _voiceArray = [NSMutableArray array];
     }
     return _voiceArray;
+}
+-(UILabel *)label{
+    if (!_label) {
+        _label = [[UILabel alloc]init];
+        _label.frame = CGRectMake(50, 320, self.view.frame.size.width - 100, 50);
+        _label.backgroundColor = [UIColor yellowColor];
+        _label.textAlignment = 1;
+        _label.text = @"00:00:00";
+      
+    }
+    return _label;
     
     
-    
+}
+-(UIButton *)scrollBtn{
+    if (!_scrollBtn) {
+        _scrollBtn = [[UIButton alloc]init];
+        [self.view addSubview:_scrollBtn];
+        _scrollBtn.backgroundColor = [UIColor blueColor];
+    }
+    return _scrollBtn;
 }
 -(UIScrollView *)scrollView{
     if (!_scrollView) {
@@ -150,6 +170,7 @@
     [self.view addSubview:self.resumeBtn];
     [self.view addSubview:self.recordBtn];
     [self.view addSubview:self.pauseBtn];
+      [self.view addSubview:self.label];
     [self.recordBtn addTarget:self action:@selector(recordClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.pauseBtn addTarget:self action:@selector(pauseClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.resumeBtn addTarget:self action:@selector(resumeClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -157,6 +178,9 @@
     [self.view addSubview:self.scrollView];
     [self setScrollView];
     [self setAudioSession];
+    [self addSubViews];
+    }
+-(void)addSubViews{
     for (int i = 0; i <7; i++) {
         UILabel * label = [UILabel new];
         label.frame= CGRectMake(self.view.frame.size.width - 25 , 191+i*15, 20, 10);
@@ -206,7 +230,9 @@
         label.font = [UIFont systemFontOfSize:10];
         label.textColor = [UIColor whiteColor];
         [self.view addSubview:label];
+        self.scrollBtn.frame = CGRectMake(10+self.scrollView.frame.origin.x, self.scrollView.frame.origin.y+32, 1, self.scrollView.frame.size.height-32);
     }
+    
 
 }
 //设置scrollView
@@ -372,8 +398,6 @@
     
     self.voiceView.array = self.array;
     float i = 0 ;
-    //
-    NSLog(@"%d",self.array.count);
     if (IS_IPHONE_6) {
         i  = self.array.count * 375/240.0;
         
@@ -393,10 +417,10 @@
         btn.backgroundColor = [UIColor whiteColor];
         [_voiceView addSubview:btn];
         //移动scrollView;
-       [self.scrollView scrollRectToVisible:CGRectMake(10+i,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
+//       [self.scrollView scrollRectToVisible:CGRectMake(10+i,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
         
     }
-  
+
         if (self.array.count % 40 == 0) {
             UIButton *btn = [UIButton new];
             btn.frame=CGRectMake(10+i+self.view.frame.size.width, 12, 1, 20);
@@ -412,12 +436,16 @@
 
             
         }
+     if (i<= self.scrollView.frame.size.width/2.0-10) {
+         self.scrollBtn.frame = CGRectMake(10+self.scrollView.frame.origin.x+i, self.scrollView.frame.origin.y+32, 1, self.scrollView.frame.size.height-32);}
     //如果超过屏幕一半  增加view的frame
-    if (i>= self.scrollView.frame.size.width/2.0) {
+    
+    if (i>= self.scrollView.frame.size.width/2.0-10) {
         //屏幕移动
-      
+      self.scrollView.contentOffset =CGPointMake(i-self.view.frame.size.width/2+10, 0);
         self.voiceView.frame =CGRectMake(0, 0, self.view.frame.size.width*1.0/2.0+10+i,self.voiceView.frame.size.height*1.0);
         self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width*1.0/2.0+ 10+i , self.voiceView.frame.size.height*1.0);
+        
     }
     else{
         [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
@@ -434,6 +462,11 @@
     }
     NSLog(@"录音完成!");
 
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+    self.label.text = [NSString stringWithFormat:@"%f",scrollView.contentOffset];
+    
+    
 }
 
 @end

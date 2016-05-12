@@ -28,7 +28,6 @@
         if(y<=1) y = 1;
         aPoints[0] =CGPointMake(x,(self.frame.size.height+32)/2.0- self.frame.size.height*y*1.5/160);//坐标1
         aPoints[1] =CGPointMake(x, (self.frame.size.height+32)/2.0+self.frame.size.height*y*1.5/160);//坐标2
-        NSLog(@"%f",self.frame.size.height*y*1.5/160.0);
         CGContextAddLines(context, aPoints, 2);//添加线
         if (IS_IPHONE_6) {
             x += 375.0/240.0;
