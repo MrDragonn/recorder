@@ -40,7 +40,7 @@
 -(UILabel *)label{
     if (!_label) {
         _label = [[UILabel alloc]init];
-        _label.frame = CGRectMake(50, 320, self.view.frame.size.width - 100, 50);
+        _label.frame = CGRectMake(100, 320, self.view.frame.size.width - 200, 50);
         _label.backgroundColor = [UIColor yellowColor];
         _label.textAlignment = 1;
         _label.text = @"00:00:00";
@@ -263,6 +263,7 @@
         
     }
         self.scrollView.scrollEnabled = NO;
+     self.scrollView.contentOffset=CGPointMake(0, 0);
 }
 // 点击暂定按钮
 -(void)pauseClick:(UIButton *)sender{
@@ -284,7 +285,7 @@
     self.array = nil;
     self.timer.fireDate=[NSDate distantFuture];
 
-     [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.voiceView.frame.size.width, self.voiceView.frame.size.height) animated:YES];
+   
 
      self.scrollView.scrollEnabled = YES;
 }
@@ -383,7 +384,7 @@
 // 绘图定时器  目前每秒画40次
 -(NSTimer *)timer{
     if (!_timer) {
-        _timer=[NSTimer scheduledTimerWithTimeInterval:0.025f target:self selector:@selector(audioPowerChange) userInfo:nil repeats:YES];
+        _timer=[NSTimer scheduledTimerWithTimeInterval:0.01f target:self selector:@selector(audioPowerChange) userInfo:nil repeats:YES];
     }
     return _timer;
 }
@@ -399,29 +400,29 @@
     self.voiceView.array = self.array;
     float i = 0 ;
     if (IS_IPHONE_6) {
-        i  = self.array.count * 375/240.0;
+        i  = self.array.count * 375/600.0;
         
     }
     if (IS_IPHONE_6P) {
-        i  = self.array.count * 414.0/240.0;
+        i  = self.array.count * 414.0/600.0;
         
     }
     if (IS_IPHONE_5) {
-        i  = self.array.count * 320.0 /240.0;
+        i  = self.array.count * 320.0 /600.0;
         
     }
+    int d = self.array.count;
+    self.label.text = [NSString stringWithFormat:@"%d%d:%d%d.%d%d",d/60000%6,d/6000%10,d/1000%6,d/100%10,d/10%10,d%10];
+
     //添加竖线,数字
-    if (self.array.count % 10 == 0 ) {
+    if (self.array.count % 25 == 0 ) {
         UIButton *btn = [UIButton new];
         btn.frame=CGRectMake(10+i+self.view.frame.size.width, 25, 1, 5);
         btn.backgroundColor = [UIColor whiteColor];
         [_voiceView addSubview:btn];
-        //移动scrollView;
-//       [self.scrollView scrollRectToVisible:CGRectMake(10+i,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
-        
     }
 
-        if (self.array.count % 40 == 0) {
+        if (self.array.count % 100 == 0) {
             UIButton *btn = [UIButton new];
             btn.frame=CGRectMake(10+i+self.view.frame.size.width, 12, 1, 20);
             btn.backgroundColor = [UIColor whiteColor];
@@ -430,7 +431,7 @@
                     label.font = [UIFont systemFontOfSize:10];
                     label.textColor = [UIColor  whiteColor];
                     label.frame= CGRectMake(10+i+self.view.frame.size.width+5, 12, 30, 10);
-            int f = self.array.count/40 +6;
+            int f = self.array.count/100 +6;
                label.text = [NSString stringWithFormat:@"%d%d:%d%d",f/600%6,f/60%10,f/10%6,f%10];
                     [_voiceView addSubview:label];
 
@@ -448,7 +449,7 @@
         
     }
     else{
-        [self.scrollView scrollRectToVisible:CGRectMake(0,0, self.view.frame.size.width, self.view.frame.size.height) animated:YES];
+      
         self.voiceView.frame =CGRectMake(0, 0, 10+self.view.frame.size.width,self.voiceView.frame.size.height);
         self.scrollView.contentSize = CGSizeMake(10+self.view.frame.size.width, self.voiceView.frame.size.height);
         
@@ -462,11 +463,6 @@
     }
     NSLog(@"录音完成!");
 
-}
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
-    self.label.text = [NSString stringWithFormat:@"%f",scrollView.contentOffset];
-    
-    
 }
 
 @end

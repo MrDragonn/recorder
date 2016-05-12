@@ -14,7 +14,7 @@
 //画图:
 -(void)drawRect:(CGRect)rect{
     CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 1);//线的宽度
+    CGContextSetLineWidth(context, 0.3);//线的宽度
     UIColor* aColor = [UIColor whiteColor];//白色
     
     CGContextSetStrokeColorWithColor(context, aColor.CGColor);//线框颜色
@@ -22,7 +22,7 @@
     for (NSNumber* number in self.array) {
         float y = [number intValue];
         y  = y+30;
-        if(y<=1) y = 0.5;
+        if(y<=1) y = 0.3;
        
         CGPoint aPoints[2];//坐标点
         if(y<=1) y = 1;
@@ -30,13 +30,13 @@
         aPoints[1] =CGPointMake(x, (self.frame.size.height+32)/2.0+self.frame.size.height*y*1.5/160);//坐标2
         CGContextAddLines(context, aPoints, 2);//添加线
         if (IS_IPHONE_6) {
-            x += 375.0/240.0;
+            x += 375.0/600.0;
         }
         if (IS_IPHONE_6P) {
-            x+= 414.0/240.0;
+            x+= 414.0/600.0;
         }
         if (IS_IPHONE_5) {
-            x+=320.0 /240.0;
+            x+=320.0 /600.0;
         }
     }
      CGPoint line[2];
