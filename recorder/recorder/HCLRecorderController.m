@@ -40,7 +40,7 @@
 -(UILabel *)label{
     if (!_label) {
         _label = [[UILabel alloc]init];
-        _label.frame = CGRectMake(100, 320, self.view.frame.size.width - 200, 50);
+        _label.frame = CGRectMake(10, 320, self.view.frame.size.width - 300, 30);
         _label.backgroundColor = [UIColor yellowColor];
         _label.textAlignment = 1;
         _label.text = @"00:00:00";
@@ -249,10 +249,6 @@
     self.scrollView.bounces = NO;
     self.scrollView.scrollEnabled = YES;
     [self.scrollView addSubview:self.voiceView];
-    
-    
-
-//     self.voiceView.
 }
 
 // 点击录音按钮
@@ -260,10 +256,10 @@
     if (![self.audioRecorder isRecording]) {
         [self.audioRecorder record];//首次使用应用时如果调用record方法会询问用户是否允许使用麦克风
         self.timer.fireDate=[NSDate distantPast];
-        
     }
         self.scrollView.scrollEnabled = NO;
      self.scrollView.contentOffset=CGPointMake(0, 0);
+    self.label.frame = CGRectMake(10, 320, self.view.frame.size.width - 300, 30);
 }
 // 点击暂定按钮
 -(void)pauseClick:(UIButton *)sender{
@@ -284,9 +280,6 @@
     [self.audioRecorder stop];
     self.array = nil;
     self.timer.fireDate=[NSDate distantFuture];
-
-   
-
      self.scrollView.scrollEnabled = YES;
 }
 #pragma mark - 私有方法
@@ -438,7 +431,11 @@
             
         }
      if (i<= self.scrollView.frame.size.width/2.0-10) {
-         self.scrollBtn.frame = CGRectMake(10+self.scrollView.frame.origin.x+i, self.scrollView.frame.origin.y+32, 1, self.scrollView.frame.size.height-32);}
+         self.scrollBtn.frame = CGRectMake(10+self.scrollView.frame.origin.x+i, self.scrollView.frame.origin.y+32, 1, self.scrollView.frame.size.height-32);
+         if(self.scrollBtn.frame.origin.x >= self.label.center.x){
+             self.label.center = CGPointMake(10+self.scrollView.frame.origin.x+i, self.label.center.y);
+         }
+     }
     //如果超过屏幕一半  增加view的frame
     
     if (i>= self.scrollView.frame.size.width/2.0-10) {
