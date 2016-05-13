@@ -461,7 +461,8 @@
         [self.audioPlayer play];
     }
     NSLog(@"录音完成!");
+}
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView{
 
 }
-
 @end
