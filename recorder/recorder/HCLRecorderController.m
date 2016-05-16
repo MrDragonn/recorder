@@ -457,9 +457,9 @@
 }
 
 -(void)audioRecorderDidFinishRecording:(AVAudioRecorder *)recorder successfully:(BOOL)flag{
-    if (![self.audioPlayer isPlaying]) {
-        [self.audioPlayer play];
-    }
+//    if (![self.audioPlayer isPlaying]) {
+//        [self.audioPlayer play];
+//    }
     NSLog(@"录音完成!");
 }
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView{
